@@ -160,15 +160,18 @@ const Profile = () => {
                     </div>
                   </div>
                   <div className="space-y-4">
-                    {order.items.map(item => (
-                      <div key={item.id} className="flex gap-4 items-center">
-                        <img src={item.image} className="w-12 h-12 object-contain" />
-                        <div>
-                          <p className="font-headline text-sm uppercase">{item.name}</p>
-                          <p className="font-mono text-[8px] text-on-surface-variant uppercase">Qty: {item.quantity}</p>
+                    {order.items.map(item => {
+                      const nameKey = `p_${item.name.toLowerCase().replace(' ', '_')}_name`;
+                      return (
+                        <div key={item.id} className="flex gap-4 items-center">
+                          <img src={item.image} className="w-12 h-12 object-contain" />
+                          <div>
+                            <p className="font-headline text-sm uppercase">{t(nameKey)}</p>
+                            <p className="font-mono text-[8px] text-on-surface-variant uppercase">Qty: {item.quantity}</p>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                   <div className="mt-8 pt-6 border-t border-white/5 flex justify-between items-end">
                      <div>

@@ -67,7 +67,7 @@ const Navbar = () => {
             onClick={() => setLang(lang === 'pt' ? 'en' : 'pt')}
             className="font-mono text-[10px] text-on-surface-variant hover:text-primary transition-colors border border-white/10 px-2 py-1 rounded"
           >
-            {lang === 'pt' ? 'EN' : 'PT'}
+            {lang === 'pt' ? 'PT' : 'EN'}
           </button>
 
           <Link to="/checkout" className="relative group/cart">
@@ -100,7 +100,7 @@ const Navbar = () => {
           onClick={() => setLang(lang === 'pt' ? 'en' : 'pt')}
           className="font-mono text-[8px] text-on-surface-variant border border-white/10 px-2 py-1 rounded"
         >
-          {lang === 'pt' ? 'EN' : 'PT'}
+          {lang === 'pt' ? 'PT' : 'EN'}
         </button>
         <Link to="/checkout" className="relative">
           <span className="material-symbols-outlined text-neutral-50">shopping_bag</span>

@@ -133,27 +133,30 @@ const Checkout = () => {
           {cart.length === 0 ? (
             <div className="text-center py-20 opacity-30 font-mono text-xs uppercase tracking-widest">{t('checkout_empty')}</div>
           ) : (
-            cart.map(item => (
-              <div key={item.id} className="glass-card p-6 flex gap-6 items-center">
-                <img src={item.image} className="w-20 h-20 object-contain" />
-                <div className="flex-1">
-                  <div className="flex justify-between items-start">
-                    <h3 className="font-headline text-lg uppercase">{item.name}</h3>
-                    <button onClick={() => removeFromCart(item.id)} className="text-error opacity-50 hover:opacity-100">
-                      <span className="material-symbols-outlined text-sm">close</span>
-                    </button>
-                  </div>
-                  <div className="flex justify-between items-center mt-4">
-                    <div className="flex items-center gap-4 bg-white/5 px-2 py-1 rounded">
-                      <button onClick={() => updateQuantity(item.id, -1)}>-</button>
-                      <span className="font-mono text-xs">{item.quantity}</span>
-                      <button onClick={() => updateQuantity(item.id, 1)}>+</button>
+            cart.map(item => {
+              const nameKey = `p_${item.name.toLowerCase().replace(' ', '_')}_name`;
+              return (
+                <div key={item.id} className="glass-card p-6 flex gap-6 items-center">
+                  <img src={item.image} className="w-20 h-20 object-contain" />
+                  <div className="flex-1">
+                    <div className="flex justify-between items-start">
+                      <h3 className="font-headline text-lg uppercase">{t(nameKey)}</h3>
+                      <button onClick={() => removeFromCart(item.id)} className="text-error opacity-50 hover:opacity-100">
+                        <span className="material-symbols-outlined text-sm">close</span>
+                      </button>
                     </div>
-                    <span className="font-mono text-xs">R$ {item.price}</span>
+                    <div className="flex justify-between items-center mt-4">
+                      <div className="flex items-center gap-4 bg-white/5 px-2 py-1 rounded">
+                        <button onClick={() => updateQuantity(item.id, -1)}>-</button>
+                        <span className="font-mono text-xs">{item.quantity}</span>
+                        <button onClick={() => updateQuantity(item.id, 1)}>+</button>
+                      </div>
+                      <span className="font-mono text-xs">R$ {item.price}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           )}
         </div>
 

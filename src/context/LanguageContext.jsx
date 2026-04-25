@@ -44,7 +44,20 @@ const translations = {
     success_title: 'Pedido Confirmado',
     success_desc: 'Sua jornada sensorial começou. Prepare-se para elevar sua experiência ao nível Mansão.',
     success_cta: 'Ver meus pedidos',
-    back_to_catalog: 'Retornar ao Catálogo'
+    back_to_catalog: 'Retornar ao Catálogo',
+    // Products
+    p_neon_name: 'Neon Lime',
+    p_neon_desc: 'O sabor da festa. Complexo vitamínico B, 0% Cafeína. A explosão cítrica que corta o escuro.',
+    p_pink_name: 'Pink Void',
+    p_pink_desc: 'Mais profundo que o desejo. Complexo vitamínico B, 0% Cafeína. O toque aveludado das sombras.',
+    p_cyan_name: 'Cyan Freeze',
+    p_cyan_desc: 'Zero Absoluto. Complexo vitamínico B, 0% Cafeína. O frio cortante da madrugada urbana.',
+    p_yellow_name: 'Yellow Pulse',
+    p_yellow_desc: 'Energia Pura. Complexo vitamínico B, 0% Cafeína. O calor magnético que não deixa parar.',
+    p_purple_name: 'Purple Haze',
+    p_purple_desc: 'Mente Elétrica. À base de Nootrópicos, 0% Álcool. A sintonia fina entre o corpo e a alma.',
+    p_emerald_name: 'Emerald Night',
+    p_emerald_desc: 'Calma Focada. Enriquecido com L-Teanina. O silêncio absoluto no meio do festival.'
   },
   en: {
     nav_collections: 'Collections',
@@ -89,7 +102,20 @@ const translations = {
     success_title: 'Order Confirmed',
     success_desc: 'Your sensory journey has begun. Prepare to elevate your experience to the Mansion level.',
     success_cta: 'View my orders',
-    back_to_catalog: 'Back to Catalog'
+    back_to_catalog: 'Back to Catalog',
+    // Products
+    p_neon_name: 'Neon Lime',
+    p_neon_desc: 'The flavor of the party. Vitamin B complex, 0% Caffeine. The citrus explosion that cuts through the dark.',
+    p_pink_name: 'Pink Void',
+    p_pink_desc: 'Deeper than desire. Vitamin B complex, 0% Caffeine. The velvety touch of shadows.',
+    p_cyan_name: 'Cyan Freeze',
+    p_cyan_desc: 'Absolute Zero. Vitamin B complex, 0% Caffeine. The biting cold of the urban dawn.',
+    p_yellow_name: 'Yellow Pulse',
+    p_yellow_desc: 'Pure Energy. Vitamin B complex, 0% Caffeine. The magnetic heat that never stops.',
+    p_purple_name: 'Purple Haze',
+    p_purple_desc: 'Electric Mind. Nootropics-based, 0% Alcohol. The fine tuning between body and soul.',
+    p_emerald_name: 'Emerald Night',
+    p_emerald_desc: 'Focused Calm. Enriched with L-Theanine. Absolute silence in the middle of the festival.'
   }
 };
 
