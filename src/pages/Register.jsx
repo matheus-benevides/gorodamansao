@@ -23,7 +23,11 @@ const Register = () => {
         navigate('/login')
       } else {
         const data = await res.json()
-        setError(data.error || t('auth_err_reg'))
+        if (res.status === 400 && data.error.includes('já está em uso')) {
+          setError(t('auth_err_email_exists'))
+        } else {
+          setError(t('auth_err_reg'))
+        }
       }
     } catch (err) {
       setError(t('auth_err_conn'))

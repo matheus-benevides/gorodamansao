@@ -170,12 +170,13 @@ const Profile = () => {
                   </div>
                   <div className="space-y-4">
                     {order.items.map(item => {
-                      const nameKey = `p_${item.name.toLowerCase().replace(' ', '_')}_name`;
+                      const nameKey = `p_${item.name.toLowerCase().replace(/\s+/g, '_')}_name`;
+                      const translatedName = t(nameKey);
                       return (
                         <div key={item.id} className="flex gap-4 items-center">
                           <img src={item.image} className="w-12 h-12 object-contain" />
                           <div>
-                            <p className="font-headline text-sm uppercase">{t(nameKey)}</p>
+                            <p className="font-headline text-sm uppercase">{translatedName === nameKey ? item.name : translatedName}</p>
                             <p className="font-mono text-[8px] text-on-surface-variant uppercase">Qty: {item.quantity}</p>
                           </div>
                         </div>

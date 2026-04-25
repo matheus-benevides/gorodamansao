@@ -24,7 +24,7 @@ const Login = () => {
         localStorage.setItem('user', JSON.stringify(data.user))
         navigate('/')
       } else {
-        setError(data.error || t('auth_err_creds'))
+        setError(t('auth_err_invalid'))
       }
     } catch (err) {
       setError(t('auth_err_conn'))

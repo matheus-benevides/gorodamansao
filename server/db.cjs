@@ -93,11 +93,17 @@ async function initDb() {
 
     await db.run('UPDATE users SET is_admin = 1 WHERE email = ?', ['matheus@email.com']);
     
-    const adminExists = await db.get('SELECT * FROM users WHERE email = ?', ['admin@email.com']);
+    const adminEmail = 'admin@admin.com';
+    const adminExists = await db.get('SELECT * FROM users WHERE email = ?', [adminEmail]);
     if (!adminExists) {
         const bcrypt = require('bcryptjs');
-        const hash = await bcrypt.hash('admin123', 10);
-        await db.run('INSERT INTO users (name, email, password, is_admin) VALUES (?, ?, ?, ?)', ['Admin', 'admin@email.com', hash, 1]);
+        const hash = await bcrypt.hash('1234567', 10);
+        await db.run('INSERT INTO users (name, email, password, is_admin) VALUES (?, ?, ?, ?)', ['Admin', adminEmail, hash, 1]);
+    } else {
+        // Garantir que a senha e admin estejam corretos mesmo se o usuário já existir
+        const bcrypt = require('bcryptjs');
+        const hash = await bcrypt.hash('1234567', 10);
+        await db.run('UPDATE users SET password = ?, is_admin = 1 WHERE email = ?', [hash, adminEmail]);
     }
 
     return db;

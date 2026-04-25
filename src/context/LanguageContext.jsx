@@ -140,6 +140,11 @@ const translations = {
     admin_user_admin: 'Admin',
     admin_user_member: 'Membro',
     admin_user_toggle: 'Alterar Nível',
+    // Auth Errors
+    auth_err_email_exists: 'Este e-mail já está em uso.',
+    auth_err_invalid: 'E-mail ou senha incorretos.',
+    auth_err_reg: 'Falha ao criar conta. Tente novamente.',
+    auth_err_conn: 'Erro de conexão com o servidor.',
     // Products
     p_neon_lime_name: 'Neon Lime',
     p_neon_lime_desc: 'O sabor da festa. Complexo vitamínico B, 0% Cafeína. A explosão cítrica que corta o escuro.',
@@ -293,6 +298,11 @@ const translations = {
     admin_user_admin: 'Admin',
     admin_user_member: 'Member',
     admin_user_toggle: 'Toggle Role',
+    // Auth Errors
+    auth_err_email_exists: 'This email is already in use.',
+    auth_err_invalid: 'Incorrect email or password.',
+    auth_err_reg: 'Failed to create account. Try again.',
+    auth_err_conn: 'Server connection error.',
     // Products
     p_neon_lime_name: 'Neon Lime',
     p_neon_lime_desc: 'The flavor of the party. Vitamin B complex, 0% Caffeine. The citrus explosion that cuts through the dark.',

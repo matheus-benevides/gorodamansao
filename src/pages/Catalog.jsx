@@ -43,9 +43,14 @@ const Catalog = () => {
 
   const getProductTranslation = (p) => {
     const key = p.name.toLowerCase().replace(/\s+/g, '_');
+    const nameKey = `p_${key}_name`;
+    const descKey = `p_${key}_desc`;
+    const translatedName = t(nameKey);
+    const translatedDesc = t(descKey);
+
     return {
-      name: t(`p_${key}_name`),
-      desc: t(`p_${key}_desc`)
+      name: translatedName === nameKey ? p.name : translatedName,
+      desc: translatedDesc === descKey ? p.description : translatedDesc
     };
   };
 

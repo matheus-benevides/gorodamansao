@@ -120,12 +120,13 @@ const Checkout = () => {
           ) : (
             cart.map(item => {
               const nameKey = `p_${item.name.toLowerCase().replace(/\s+/g, '_')}_name`;
+              const translatedName = t(nameKey);
               return (
                 <div key={item.id} className="glass-card p-6 flex gap-6 items-center">
                   <img src={item.image} className="w-20 h-20 object-contain" />
                   <div className="flex-1">
                     <div className="flex justify-between items-start">
-                      <h3 className="font-headline text-lg uppercase">{t(nameKey)}</h3>
+                      <h3 className="font-headline text-lg uppercase">{translatedName === nameKey ? item.name : translatedName}</h3>
                       <button onClick={() => removeFromCart(item.id)} className="text-error opacity-50 hover:opacity-100">
                         <span className="material-symbols-outlined text-sm">close</span>
                       </button>
