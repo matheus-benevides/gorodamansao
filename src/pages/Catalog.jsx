@@ -11,7 +11,7 @@ const Catalog = () => {
   const [products, setProducts] = useState([])
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/products')
+    fetch('http://127.0.0.1:3001/api/products')
       .then(res => res.json())
       .then(data => setProducts(data))
       .catch(err => console.error('Error fetching products:', err))

@@ -22,7 +22,7 @@ const Checkout = () => {
 
     const token = localStorage.getItem('token')
     if (token) {
-      fetch('http://localhost:3001/api/profile', {
+      fetch('http://127.0.0.1:3001/api/profile', {
         headers: { 'Authorization': `Bearer ${token}` }
       })
       .then(res => res.json())
@@ -69,7 +69,7 @@ const Checkout = () => {
 
       // If new card and save is checked
       if (showNewPaymentForm && saveCard) {
-        const cardRes = await fetch('http://localhost:3001/api/profile/payments', {
+        const cardRes = await fetch('http://127.0.0.1:3001/api/profile/payments', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
           body: JSON.stringify({ ...newCard, type: 'Credit Card' })
@@ -78,7 +78,7 @@ const Checkout = () => {
         finalPaymentId = cardData.id
       }
 
-      const res = await fetch('http://localhost:3001/api/orders', {
+      const res = await fetch('http://127.0.0.1:3001/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({

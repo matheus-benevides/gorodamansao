@@ -72,7 +72,7 @@ app.post('/api/login', async (req, res) => {
 app.get('/api/products', async (req, res) => {
     if (!db) return res.status(503).json({ error: 'Banco de dados não disponível' });
     try {
-        const products = await db.all('SELECT * FROM products');
+        const products = await db.all('SELECT * FROM products WHERE active = 1');
         res.json(products);
     } catch (error) {
         res.status(500).json({ error: 'Erro ao buscar produtos' });
@@ -174,6 +174,40 @@ app.post('/api/products', authenticateAdmin, async (req, res) => {
         res.status(201).json({ message: 'Produto adicionado com sucesso' });
     } catch (error) {
         res.status(400).json({ error: 'Falha ao adicionar produto' });
+    }
+});
+
+app.get('/api/admin/products', authenticateAdmin, async (req, res) => {
+    try {
+        const products = await db.all('SELECT * FROM products');
+        res.json(products);
+    } catch (error) {
+        res.status(500).json({ error: 'Falha ao buscar produtos para admin' });
+    }
+});
+
+app.put('/api/admin/products/:id', authenticateAdmin, async (req, res) => {
+    const { id } = req.params;
+    const { name, flavor, tag, price, description, image, color } = req.body;
+    try {
+        await db.run(
+            'UPDATE products SET name = ?, flavor = ?, tag = ?, price = ?, description = ?, image = ?, color = ? WHERE id = ?',
+            [name, flavor, tag, price, description, image, color, id]
+        );
+        res.json({ message: 'Produto atualizado com sucesso' });
+    } catch (error) {
+        res.status(400).json({ error: 'Falha ao atualizar produto' });
+    }
+});
+
+app.patch('/api/admin/products/:id/status', authenticateAdmin, async (req, res) => {
+    const { id } = req.params;
+    const { active } = req.body;
+    try {
+        await db.run('UPDATE products SET active = ? WHERE id = ?', [active, id]);
+        res.json({ message: 'Status do produto atualizado' });
+    } catch (error) {
+        res.status(400).json({ error: 'Falha ao atualizar status do produto' });
     }
 });
 

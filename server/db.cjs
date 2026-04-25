@@ -41,12 +41,13 @@ async function initDb() {
         CREATE TABLE IF NOT EXISTS products (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
-            flavor TEXT NOT NULL,
-            tag TEXT NOT NULL,
-            price TEXT NOT NULL,
-            description TEXT NOT NULL,
-            image TEXT NOT NULL,
-            color TEXT NOT NULL
+            flavor TEXT,
+            tag TEXT,
+            price TEXT,
+            description TEXT,
+            image TEXT,
+            color TEXT,
+            active INTEGER DEFAULT 1
         );
 
         CREATE TABLE IF NOT EXISTS orders (

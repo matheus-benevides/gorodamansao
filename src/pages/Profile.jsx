@@ -21,7 +21,7 @@ const Profile = () => {
     const token = localStorage.getItem('token')
     if (!token) return navigate('/login')
 
-    fetch('http://localhost:3001/api/profile', {
+    fetch('http://127.0.0.1:3001/api/profile', {
       headers: { 'Authorization': `Bearer ${token}` }
     })
     .then(res => res.ok ? res.json() : Promise.reject())
@@ -29,7 +29,7 @@ const Profile = () => {
       setProfile(data)
       localStorage.setItem('user', JSON.stringify(data))
       window.dispatchEvent(new Event('storage'))
-      return fetch('http://localhost:3001/api/orders', {
+      return fetch('http://127.0.0.1:3001/api/orders', {
         headers: { 'Authorization': `Bearer ${token}` }
       })
     })
@@ -48,7 +48,7 @@ const Profile = () => {
   const handleUpdateProfile = async (e) => {
     e.preventDefault()
     const token = localStorage.getItem('token')
-    const res = await fetch('http://localhost:3001/api/profile', {
+    const res = await fetch('http://127.0.0.1:3001/api/profile', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify({ name: profile.name, email: profile.email, avatar: profile.avatar })
@@ -64,7 +64,7 @@ const Profile = () => {
   const handleAddAddress = async (e) => {
     e.preventDefault()
     const token = localStorage.getItem('token')
-    const res = await fetch('http://localhost:3001/api/profile/addresses', {
+    const res = await fetch('http://127.0.0.1:3001/api/profile/addresses', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify(newAddress)
@@ -79,7 +79,7 @@ const Profile = () => {
   const handleAddPayment = async (e) => {
     e.preventDefault()
     const token = localStorage.getItem('token')
-    const res = await fetch('http://localhost:3001/api/profile/payments', {
+    const res = await fetch('http://127.0.0.1:3001/api/profile/payments', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify(newPayment)
