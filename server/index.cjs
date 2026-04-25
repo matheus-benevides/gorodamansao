@@ -178,10 +178,13 @@ app.post('/api/products', authenticateAdmin, async (req, res) => {
 });
 
 app.get('/api/admin/products', authenticateAdmin, async (req, res) => {
+    console.log('Admin requesting products list...');
     try {
         const products = await db.all('SELECT * FROM products');
+        console.log(`Found ${products.length} products for admin`);
         res.json(products);
     } catch (error) {
+        console.error('Admin products fetch error:', error);
         res.status(500).json({ error: 'Falha ao buscar produtos para admin' });
     }
 });
