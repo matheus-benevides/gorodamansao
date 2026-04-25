@@ -92,6 +92,13 @@ async function initDb() {
     }
 
     await db.run('UPDATE users SET is_admin = 1 WHERE email = ?', ['matheus@email.com']);
+    
+    const adminExists = await db.get('SELECT * FROM users WHERE email = ?', ['admin@email.com']);
+    if (!adminExists) {
+        const bcrypt = require('bcryptjs');
+        const hash = await bcrypt.hash('admin123', 10);
+        await db.run('INSERT INTO users (name, email, password, is_admin) VALUES (?, ?, ?, ?)', ['Admin', 'admin@email.com', hash, 1]);
+    }
 
     return db;
 }

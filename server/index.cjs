@@ -177,6 +177,26 @@ app.post('/api/products', authenticateAdmin, async (req, res) => {
     }
 });
 
+app.get('/api/admin/users', authenticateAdmin, async (req, res) => {
+    try {
+        const users = await db.all('SELECT id, name, email, is_admin, avatar FROM users');
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ error: 'Falha ao buscar usuários' });
+    }
+});
+
+app.put('/api/admin/users/:id/role', authenticateAdmin, async (req, res) => {
+    const { id } = req.params;
+    const { is_admin } = req.body;
+    try {
+        await db.run('UPDATE users SET is_admin = ? WHERE id = ?', [is_admin, id]);
+        res.json({ message: 'Permissão atualizada' });
+    } catch (error) {
+        res.status(400).json({ error: 'Falha ao atualizar permissão' });
+    }
+});
+
 // -- INICIALIZAÇÃO --
 
 async function startServer() {
