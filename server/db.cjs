@@ -14,6 +14,7 @@ async function initDb() {
             name TEXT NOT NULL,
             email TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL,
+            is_admin INTEGER DEFAULT 0,
             avatar TEXT DEFAULT 'https://lh3.googleusercontent.com/aida-public/AB6AXuDnrjtzDrjVYgQPK_L_C-nd6G_A1tg3S3lgP27cTBMRpsmLyNhJslUrnuN4xWP6_2sy6BlcgOdywekL0zzxglJLrJQNvcEgweS07RKtzG7DQjFaYl4esJtxfZhF0sTBXl-MrIj8OQ5yV4CF4qLgfoLY-Du6NwNnwD2UNdtcPUuDJXs8AJA2txpV8z0SRECgkGqKLy59nx_RFv-f3KTMjue5bt8buTXUSGryhQD-re4Qg4QoqaGr03_wA27Tpl0yxL9u5ZJleO11jlg'
         );
 
@@ -89,6 +90,8 @@ async function initDb() {
             );
         }
     }
+
+    await db.run('UPDATE users SET is_admin = 1 WHERE email = ?', ['matheus@email.com']);
 
     return db;
 }

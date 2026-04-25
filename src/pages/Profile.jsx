@@ -106,7 +106,14 @@ const Profile = () => {
           <img src={profile.avatar} className="w-32 h-32 rounded-full object-cover relative z-10 border-2 border-white/10" />
         </div>
         <div>
-          <h1 className="font-headline text-5xl uppercase tracking-tighter mb-2">{profile.name}</h1>
+          <div className="flex items-center gap-4 mb-2">
+            <h1 className="font-headline text-5xl uppercase tracking-tighter">{profile.name}</h1>
+            {profile.is_admin === 1 && (
+              <Link to="/admin" className="font-mono text-[8px] uppercase tracking-widest text-primary border border-primary/30 px-2 py-0.5 rounded hover:bg-primary hover:text-background transition-all">
+                ADMIN
+              </Link>
+            )}
+          </div>
           <p className="font-mono text-[10px] text-on-surface-variant uppercase tracking-widest">{profile.email} • {t('profile_title')}</p>
         </div>
       </header>

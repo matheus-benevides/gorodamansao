@@ -80,6 +80,9 @@ const Navbar = () => {
           </Link>
           {user ? (
             <div className="flex items-center gap-4 border-l border-white/10 pl-8">
+              {user.is_admin === 1 && (
+                <Link to="/admin" className="material-symbols-outlined text-primary hover:text-white transition-colors text-lg mr-2">admin_panel_settings</Link>
+              )}
               <Link to="/profile" className="font-mono text-[10px] text-emerald-400 uppercase tracking-tighter hover:text-white transition-colors cursor-pointer">{user.name}</Link>
               <span 
                 onClick={handleLogout}

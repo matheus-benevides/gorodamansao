@@ -27,6 +27,16 @@ const authenticateToken = (req, res, next) => {
     });
 };
 
+const authenticateAdmin = (req, res, next) => {
+    authenticateToken(req, res, () => {
+        if (req.user && req.user.is_admin) {
+            next();
+        } else {
+            res.status(403).json({ error: 'Acesso negado: Administrador necessário' });
+        }
+    });
+};
+
 // -- DEFINIÇÃO DAS ROTAS --
 
 app.post('/api/register', async (req, res) => {
@@ -49,8 +59,8 @@ app.post('/api/login', async (req, res) => {
     try {
         const user = await db.get('SELECT * FROM users WHERE email = ?', [email]);
         if (user && await bcrypt.compare(password, user.password)) {
-            const token = jwt.sign({ id: user.id, name: user.name }, JWT_SECRET, { expiresIn: '24h' });
-            res.json({ token, user: { name: user.name, email: user.email } });
+            const token = jwt.sign({ id: user.id, name: user.name, is_admin: user.is_admin }, JWT_SECRET, { expiresIn: '24h' });
+            res.json({ token, user: { name: user.name, email: user.email, is_admin: user.is_admin } });
         } else {
             res.status(401).json({ error: 'Credenciais inválidas' });
         }
@@ -150,6 +160,20 @@ app.post('/api/orders', authenticateToken, async (req, res) => {
         res.status(201).json({ message: 'Pedido criado', orderId });
     } catch (error) {
         res.status(400).json({ error: 'Falha ao criar pedido' });
+    }
+});
+
+// -- ADMIN ROUTES --
+app.post('/api/products', authenticateAdmin, async (req, res) => {
+    const { name, flavor, tag, price, description, image, color } = req.body;
+    try {
+        await db.run(
+            'INSERT INTO products (name, flavor, tag, price, description, image, color) VALUES (?, ?, ?, ?, ?, ?, ?)',
+            [name, flavor, tag, price, description, image, color]
+        );
+        res.status(201).json({ message: 'Produto adicionado com sucesso' });
+    } catch (error) {
+        res.status(400).json({ error: 'Falha ao adicionar produto' });
     }
 });
 
