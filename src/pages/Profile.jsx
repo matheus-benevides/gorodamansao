@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 
 const Profile = () => {
+  const { t } = useLanguage()
   const [activeTab, setActiveTab] = useState('perfil')
   const [profile, setProfile] = useState(null)
   const [orders, setOrders] = useState([])
@@ -10,11 +12,10 @@ const Profile = () => {
   const [message, setMessage] = useState('')
   const navigate = useNavigate()
 
-  // Estados dos formulários
   const [showAddressForm, setShowAddressForm] = useState(false)
   const [newAddress, setNewAddress] = useState({ street: '', city: '', state: '', zip: '' })
   const [showPaymentForm, setShowPaymentForm] = useState(false)
-  const [newPayment, setNewPayment] = useState({ card_holder: '', card_number: '', expiry: '', type: 'Cartão de Crédito' })
+  const [newPayment, setNewPayment] = useState({ card_holder: '', card_number: '', expiry: '', type: 'Credit Card' })
 
   const fetchProfile = () => {
     const token = localStorage.getItem('token')
@@ -53,7 +54,7 @@ const Profile = () => {
     if (res.ok) {
       localStorage.setItem('user', JSON.stringify({ ...profile }))
       window.dispatchEvent(new Event('storage'))
-      setMessage('Perfil atualizado com sucesso')
+      setMessage(t('profile_save_success') || 'OK')
       setTimeout(() => setMessage(''), 3000)
     }
   }
@@ -83,18 +84,18 @@ const Profile = () => {
     })
     if (res.ok) {
       setShowPaymentForm(false)
-      setNewPayment({ card_holder: '', card_number: '', expiry: '', type: 'Cartão de Crédito' })
+      setNewPayment({ card_holder: '', card_number: '', expiry: '', type: 'Credit Card' })
       fetchProfile()
     }
   }
 
-  if (loading || !profile) return <div className="min-h-screen flex items-center justify-center font-mono text-emerald-400">CARREGANDO_SESSÃO...</div>
+  if (loading || !profile) return <div className="min-h-screen flex items-center justify-center font-mono text-emerald-400">{t('loading')}</div>
 
   const tabs = [
-    { id: 'perfil', label: 'Perfil' },
-    { id: 'pedidos', label: 'Pedidos' },
-    { id: 'endereços', label: 'Endereços' },
-    { id: 'pagamentos', label: 'Pagamentos' }
+    { id: 'perfil', label: t('profile_tab_info') },
+    { id: 'pedidos', label: t('profile_tab_orders') },
+    { id: 'endereços', label: t('profile_tab_addr') },
+    { id: 'pagamentos', label: t('profile_tab_pay') }
   ]
 
   return (
@@ -106,7 +107,7 @@ const Profile = () => {
         </div>
         <div>
           <h1 className="font-headline text-5xl uppercase tracking-tighter mb-2">{profile.name}</h1>
-          <p className="font-mono text-[10px] text-on-surface-variant uppercase tracking-widest">{profile.email} • MEMBRO MANSÃO</p>
+          <p className="font-mono text-[10px] text-on-surface-variant uppercase tracking-widest">{profile.email} • {t('profile_title')}</p>
         </div>
       </header>
 
@@ -125,15 +126,15 @@ const Profile = () => {
             <form onSubmit={handleUpdateProfile} className="space-y-10">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                 <div className="space-y-4">
-                  <label className="font-mono text-[10px] text-on-surface-variant uppercase tracking-widest">Nome Completo</label>
+                  <label className="font-mono text-[10px] text-on-surface-variant uppercase tracking-widest">Full Name</label>
                   <input type="text" value={profile.name} onChange={e => setProfile({...profile, name: e.target.value})} className="w-full bg-transparent border-b border-white/10 pb-3 text-xl font-headline focus:border-primary focus:outline-none" />
                 </div>
                 <div className="space-y-4">
-                  <label className="font-mono text-[10px] text-on-surface-variant uppercase tracking-widest">E-mail</label>
+                  <label className="font-mono text-[10px] text-on-surface-variant uppercase tracking-widest">Email Address</label>
                   <input type="email" value={profile.email} onChange={e => setProfile({...profile, email: e.target.value})} className="w-full bg-transparent border-b border-white/10 pb-3 text-xl font-headline focus:border-primary focus:outline-none" />
                 </div>
               </div>
-              <button className="neon-border px-12 py-4 font-mono text-[10px] text-secondary-fixed-dim uppercase tracking-[0.3em] hover:bg-secondary-fixed-dim hover:text-background transition-all">Salvar Alterações</button>
+              <button className="neon-border px-12 py-4 font-mono text-[10px] text-secondary-fixed-dim uppercase tracking-[0.3em] hover:bg-secondary-fixed-dim hover:text-background transition-all">{t('profile_save')}</button>
               {message && <span className="ml-6 font-mono text-[10px] text-primary uppercase">{message}</span>}
             </form>
           </motion.div>
@@ -143,19 +144,19 @@ const Profile = () => {
           <motion.div key="pedidos" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-6">
             {orders.length === 0 ? (
               <div className="glass-card p-12 text-center border-dashed">
-                <p className="font-mono text-xs uppercase tracking-widest text-on-surface-variant">Nenhum pedido realizado</p>
+                <p className="font-mono text-xs uppercase tracking-widest text-on-surface-variant">{t('order_empty')}</p>
               </div>
             ) : (
               orders.map(order => (
                 <div key={order.id} className="glass-card p-8 group">
                   <div className="flex justify-between items-start mb-6 border-b border-white/5 pb-6">
                     <div>
-                      <p className="font-mono text-[8px] uppercase tracking-widest text-on-surface-variant">ID do Pedido</p>
+                      <p className="font-mono text-[8px] uppercase tracking-widest text-on-surface-variant">{t('order_id')}</p>
                       <h3 className="font-mono text-lg text-primary">#MSN-{order.id}</h3>
                     </div>
                     <div className="text-right">
                       <p className="font-mono text-[8px] uppercase tracking-widest text-on-surface-variant">{new Date(order.created_at).toLocaleDateString()}</p>
-                      <span className="font-mono text-[10px] text-emerald-400 bg-emerald-400/10 px-2 py-1 rounded">Processando</span>
+                      <span className="font-mono text-[10px] text-emerald-400 bg-emerald-400/10 px-2 py-1 rounded">Processing</span>
                     </div>
                   </div>
                   <div className="space-y-4">
@@ -164,14 +165,14 @@ const Profile = () => {
                         <img src={item.image} className="w-12 h-12 object-contain" />
                         <div>
                           <p className="font-headline text-sm uppercase">{item.name}</p>
-                          <p className="font-mono text-[8px] text-on-surface-variant uppercase">Qtd: {item.quantity}</p>
+                          <p className="font-mono text-[8px] text-on-surface-variant uppercase">Qty: {item.quantity}</p>
                         </div>
                       </div>
                     ))}
                   </div>
                   <div className="mt-8 pt-6 border-t border-white/5 flex justify-between items-end">
                      <div>
-                        <p className="font-mono text-[8px] uppercase text-on-surface-variant">Total Pago</p>
+                        <p className="font-mono text-[8px] uppercase text-on-surface-variant">{t('order_total')}</p>
                         <p className="font-headline text-2xl text-primary">R$ {(order.total + order.shipping).toFixed(2).replace('.', ',')}</p>
                      </div>
                   </div>
@@ -184,22 +185,22 @@ const Profile = () => {
         {activeTab === 'endereços' && (
           <motion.div key="endereços" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-6">
             <div className="flex justify-between items-center mb-8">
-              <h2 className="font-headline text-3xl italic uppercase">Endereços Salvos</h2>
+              <h2 className="font-headline text-3xl italic uppercase">{t('addr_saved')}</h2>
               <button onClick={() => setShowAddressForm(!showAddressForm)} className="font-mono text-[10px] text-primary border-b border-primary/30 uppercase tracking-widest hover:border-primary">
-                {showAddressForm ? 'Cancelar' : 'Adicionar Novo'}
+                {showAddressForm ? 'Cancel' : t('addr_new')}
               </button>
             </div>
 
             {showAddressForm && (
               <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} className="glass-card p-10 mb-12 overflow-hidden">
                 <form onSubmit={handleAddAddress} className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <input type="text" placeholder="Rua / Avenida" value={newAddress.street} onChange={e => setNewAddress({...newAddress, street: e.target.value})} className="col-span-full bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
-                  <input type="text" placeholder="Cidade" value={newAddress.city} onChange={e => setNewAddress({...newAddress, city: e.target.value})} className="bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
+                  <input type="text" placeholder="Street" value={newAddress.street} onChange={e => setNewAddress({...newAddress, street: e.target.value})} className="col-span-full bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
+                  <input type="text" placeholder="City" value={newAddress.city} onChange={e => setNewAddress({...newAddress, city: e.target.value})} className="bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
                   <div className="grid grid-cols-2 gap-4">
-                    <input type="text" placeholder="Estado (UF)" value={newAddress.state} onChange={e => setNewAddress({...newAddress, state: e.target.value})} className="bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
-                    <input type="text" placeholder="CEP" value={newAddress.zip} onChange={e => setNewAddress({...newAddress, zip: e.target.value})} className="bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
+                    <input type="text" placeholder="State" value={newAddress.state} onChange={e => setNewAddress({...newAddress, state: e.target.value})} className="bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
+                    <input type="text" placeholder="ZIP" value={newAddress.zip} onChange={e => setNewAddress({...newAddress, zip: e.target.value})} className="bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
                   </div>
-                  <button className="col-span-full neon-border py-4 font-mono text-[10px] uppercase tracking-widest hover:bg-primary hover:text-background transition-all">Salvar Endereço</button>
+                  <button className="col-span-full neon-border py-4 font-mono text-[10px] uppercase tracking-widest hover:bg-primary hover:text-background transition-all">Save Address</button>
                 </form>
               </motion.div>
             )}
@@ -218,19 +219,19 @@ const Profile = () => {
         {activeTab === 'pagamentos' && (
           <motion.div key="pagamentos" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-6">
             <div className="flex justify-between items-center mb-8">
-              <h2 className="font-headline text-3xl italic uppercase">Métodos de Pagamento</h2>
+              <h2 className="font-headline text-3xl italic uppercase">{t('pay_methods')}</h2>
               <button onClick={() => setShowPaymentForm(!showPaymentForm)} className="font-mono text-[10px] text-primary border-b border-primary/30 uppercase tracking-widest hover:border-primary">
-                {showPaymentForm ? 'Cancelar' : 'Novo Cartão'}
+                {showPaymentForm ? 'Cancel' : t('pay_new')}
               </button>
             </div>
 
             {showPaymentForm && (
               <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} className="glass-card p-10 mb-12 overflow-hidden">
                 <form onSubmit={handleAddPayment} className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <input type="text" placeholder="Nome no Cartão" value={newPayment.card_holder} onChange={e => setNewPayment({...newPayment, card_holder: e.target.value})} className="col-span-full bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
-                  <input type="text" placeholder="Número do Cartão" value={newPayment.card_number} onChange={e => setNewPayment({...newPayment, card_number: e.target.value})} className="bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
-                  <input type="text" placeholder="Validade (MM/AA)" value={newPayment.expiry} onChange={e => setNewPayment({...newPayment, expiry: e.target.value})} className="bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
-                  <button className="col-span-full neon-border py-4 font-mono text-[10px] uppercase tracking-widest hover:bg-primary hover:text-background transition-all">Salvar Cartão</button>
+                  <input type="text" placeholder="Card Holder Name" value={newPayment.card_holder} onChange={e => setNewPayment({...newPayment, card_holder: e.target.value})} className="col-span-full bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
+                  <input type="text" placeholder="Card Number" value={newPayment.card_number} onChange={e => setNewPayment({...newPayment, card_number: e.target.value})} className="bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
+                  <input type="text" placeholder="MM/YY" value={newPayment.expiry} onChange={e => setNewPayment({...newPayment, expiry: e.target.value})} className="bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
+                  <button className="col-span-full neon-border py-4 font-mono text-[10px] uppercase tracking-widest hover:bg-primary hover:text-background transition-all">Save Card</button>
                 </form>
               </motion.div>
             )}

@@ -2,11 +2,13 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useCart } from '../context/CartContext'
+import { useLanguage } from '../context/LanguageContext'
 
 const Navbar = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const { cart } = useCart()
+  const { lang, setLang, t } = useLanguage()
   const [user, setUser] = useState(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const isCheckout = location.pathname === '/checkout'
@@ -38,7 +40,7 @@ const Navbar = () => {
           to="/catalog"
           className={`transition-all duration-500 ${location.pathname === '/catalog' ? 'text-emerald-400 font-bold border-b border-emerald-400 pb-1' : 'text-neutral-400 hover:text-emerald-300'}`}
         >
-          Coleções
+          {t('nav_collections')}
         </Link>
         <Link
           to="/"
@@ -50,7 +52,7 @@ const Navbar = () => {
             }
           }}
         >
-          A Mansão
+          {t('nav_mansion')}
         </Link>
       </div>
 
@@ -60,6 +62,14 @@ const Navbar = () => {
 
       <div className="hidden md:flex items-center gap-12 font-serif text-neutral-50 tracking-widest uppercase text-xs">
         <div className="flex items-center gap-6">
+          {/* Language Toggle */}
+          <button 
+            onClick={() => setLang(lang === 'pt' ? 'en' : 'pt')}
+            className="font-mono text-[10px] text-on-surface-variant hover:text-primary transition-colors border border-white/10 px-2 py-1 rounded"
+          >
+            {lang === 'pt' ? 'EN' : 'PT'}
+          </button>
+
           <Link to="/checkout" className="relative group/cart">
             <span className="material-symbols-outlined text-neutral-50 cursor-pointer hover:text-emerald-300 transition-colors">shopping_bag</span>
             {cart.length > 0 && (
@@ -86,6 +96,12 @@ const Navbar = () => {
 
       {/* Mobile Toggle & Icons */}
       <div className="flex md:hidden items-center gap-6">
+        <button 
+          onClick={() => setLang(lang === 'pt' ? 'en' : 'pt')}
+          className="font-mono text-[8px] text-on-surface-variant border border-white/10 px-2 py-1 rounded"
+        >
+          {lang === 'pt' ? 'EN' : 'PT'}
+        </button>
         <Link to="/checkout" className="relative">
           <span className="material-symbols-outlined text-neutral-50">shopping_bag</span>
           {cart.length > 0 && (
@@ -108,15 +124,15 @@ const Navbar = () => {
             exit={{ opacity: 0, y: -20 }}
             className="absolute top-full left-0 w-full bg-neutral-900 border-b border-white/10 p-8 flex flex-col gap-6 font-mono text-[10px] uppercase tracking-widest md:hidden"
           >
-            <Link to="/catalog" onClick={() => setIsMenuOpen(false)}>Coleções</Link>
-            <Link to="/" onClick={() => setIsMenuOpen(false)}>A Mansão</Link>
+            <Link to="/catalog" onClick={() => setIsMenuOpen(false)}>{t('nav_collections')}</Link>
+            <Link to="/" onClick={() => setIsMenuOpen(false)}>{t('nav_mansion')}</Link>
             {user ? (
-              <Link to="/profile" onClick={() => setIsMenuOpen(false)} className="text-emerald-400">Perfil ({user.name})</Link>
+              <Link to="/profile" onClick={() => setIsMenuOpen(false)} className="text-emerald-400">{t('nav_profile')} ({user.name})</Link>
             ) : (
-              <Link to="/login" onClick={() => setIsMenuOpen(false)}>Entrar</Link>
+              <Link to="/login" onClick={() => setIsMenuOpen(false)}>{t('nav_login')}</Link>
             )}
             {user && (
-              <button onClick={() => { handleLogout(); setIsMenuOpen(false); }} className="text-error text-left">Sair</button>
+              <button onClick={() => { handleLogout(); setIsMenuOpen(false); }} className="text-error text-left">{t('nav_logout')}</button>
             )}
           </motion.div>
         )}

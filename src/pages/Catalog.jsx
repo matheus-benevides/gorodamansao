@@ -2,9 +2,11 @@ import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { useCart } from '../context/CartContext'
+import { useLanguage } from '../context/LanguageContext'
 
 const Catalog = () => {
   const navigate = useNavigate()
+  const { t } = useLanguage()
   const { addToCart } = useCart()
   const [products, setProducts] = useState([])
 
@@ -17,7 +19,6 @@ const Catalog = () => {
 
   const handleAddToCart = (product) => {
     addToCart(product)
-    // Optional: show a toast or feedback
   }
 
   const containerVariants = {
@@ -47,9 +48,9 @@ const Catalog = () => {
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="font-headline text-5xl md:text-[84px] mb-stack-sm max-w-4xl leading-tight"
+          className="font-headline text-5xl md:text-[84px] mb-stack-sm max-w-4xl leading-tight uppercase"
         >
-          Catálogo Sensorial
+          {t('cat_title')}
         </motion.h1>
         <motion.p 
           initial={{ opacity: 0 }}
@@ -57,7 +58,7 @@ const Catalog = () => {
           transition={{ delay: 0.5 }}
           className="font-body text-body-lg text-on-surface-variant max-w-2xl opacity-70 italic"
         >
-          Sabor Energético Original. Inexplicável. Uma curadoria de vibrações líquidas destiladas para a elite do caos.
+          {t('cat_desc')}
         </motion.p>
       </header>
 
@@ -103,7 +104,7 @@ const Catalog = () => {
               onClick={() => handleAddToCart(p)}
               className={`w-full py-5 px-6 border border-${p.color}-container text-${p.color}-container font-mono text-xs uppercase tracking-[0.2em] transition-all duration-300 hover:bg-${p.color}-container hover:text-background relative z-10 overflow-hidden group/btn`}
             >
-              <span className="relative z-10">Adicionar ao Carrinho</span>
+              <span className="relative z-10">{t('add_to_cart')}</span>
               <div className={`absolute inset-0 bg-${p.color}-container opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300`}></div>
             </motion.button>
           </motion.div>

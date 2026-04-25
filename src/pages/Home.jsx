@@ -1,8 +1,10 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useRef } from 'react'
+import { useLanguage } from '../context/LanguageContext'
 
 const Home = () => {
+  const { t } = useLanguage()
   const containerRef = useRef(null)
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -36,7 +38,6 @@ const Home = () => {
     <div ref={containerRef} className="overflow-hidden">
       {/* Hero Section */}
       <header className="relative min-h-screen flex flex-col items-center justify-center pt-24 overflow-hidden">
-        {/* Animated Background Glow */}
         <motion.div 
           style={{ scale: glowScale }}
           className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(19,255,67,0.12)_0%,_transparent_70%)] pointer-events-none"
@@ -50,12 +51,12 @@ const Home = () => {
           className="z-10 text-center max-w-5xl px-margin mb-stack-lg"
         >
           <motion.h1 variants={itemVariants} className="font-headline text-5xl md:text-[84px] text-primary mb-stack-sm uppercase leading-[0.9] tracking-tighter">
-            O SABOR DA FESTA.<br/>
-            <span className="text-secondary-fixed-dim bg-clip-text text-transparent bg-gradient-to-r from-secondary-fixed-dim to-emerald-400">0% ESTIMULANTES.</span><br/>
-            100% VIBE.
+            {t('hero_title')}<br/>
+            <span className="text-secondary-fixed-dim bg-clip-text text-transparent bg-gradient-to-r from-secondary-fixed-dim to-emerald-400">{t('hero_subtitle')}</span><br/>
+            {t('hero_vibe')}
           </motion.h1>
           <motion.p variants={itemVariants} className="font-body text-body-lg text-on-surface-variant max-w-2xl mx-auto italic opacity-80">
-            Projete seu shape sem o caos cardíaco. O Goró é o combustível inexplicável para quem busca performance e redução de danos.
+            {t('hero_desc')}
           </motion.p>
         </motion.div>
 
@@ -83,19 +84,14 @@ const Home = () => {
           />
         </motion.div>
 
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="mt-stack-lg z-10"
-        >
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }} className="mt-stack-lg z-10">
           <Link to="/catalog">
             <motion.button 
               whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(19,255,67,0.6)" }}
               whileTap={{ scale: 0.95 }}
               className="neon-border px-16 py-6 font-mono text-sm text-secondary-fixed-dim uppercase tracking-[0.3em] hover:bg-secondary-fixed-dim hover:text-background transition-all duration-500 neon-glow overflow-hidden relative group"
             >
-              <span className="relative z-10">Projetar Agora</span>
+              <span className="relative z-10">{t('hero_cta')}</span>
               <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity"></div>
             </motion.button>
           </Link>
@@ -104,13 +100,7 @@ const Home = () => {
 
       {/* Vozes da Mansão */}
       <section className="py-section-gap">
-        <motion.div 
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={itemVariants}
-          className="px-margin mb-stack-md"
-        >
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={itemVariants} className="px-margin mb-stack-md">
           <h2 className="font-headline text-3xl md:text-4xl text-primary italic border-l-2 border-secondary-fixed-dim pl-6 uppercase">Vozes da Mansão</h2>
         </motion.div>
         
@@ -120,13 +110,7 @@ const Home = () => {
             { name: "Felipe R.", role: "Fitness Curator", text: "Redução de danos nunca foi tão sexy. O shape agradece e a mente flutua.", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDnrjtzDrjVYgQPK_L_C-nd6G_A1tg3S3lgP27cTBMRpsmLyNhJslUrnuN4xWP6_2sy6BlcgOdywekL0zzxglJLrJQNvcEgweS07RKtzG7DQjFaYl4esJtxfZhF0sTBXl-MrIj8OQ5yV4CF4qLgfoLY-Du6NwNnwD2UNdtcPUuDJXs8AJA2txpV8z0SRECgkGqKLy59nx_RFv-f3KTMjue5bt8buTXUSGryhQD-re4Qg4QoqaGr03_wA27Tpl0yxL9u5ZJleO11jlg" },
             { name: "Bia S.", role: "Visual Designer", text: "Substituí o álcool por Goró e minha criatividade triplicou. Mansão lifestyle.", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBI94CEBTUVfws5YrTeTFYnu0EIQCbLrHQg4LLKIootlvqlxQLzKgXdjr2sfI-TlYkoXfXAzfeC0UAOqkdCZ9Z5Ep5F_nNuESCOirZraN9gT_hd-uPgG5OMfJIkuM2k30pLm7afhzZb1XlOTX9aw6AwuWX_7WYmIObiUX0WgxmLuNMYfcU4If38vLDrHr3qMhc35xJANMjzD7kgFbTkuHH15ZewN8dYHigECbs80hK8m0LYtnJudD9ZwAHOQnxYv4RKaqFJreDwvdg" }
           ].map((v, i) => (
-            <motion.div 
-              key={i}
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.2 }}
-              className="glass-card min-w-[300px] md:min-w-[400px] p-6 md:p-10 flex flex-col justify-between snap-center"
-            >
+            <motion.div key={i} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.2 }} className="glass-card min-w-[300px] md:min-w-[400px] p-6 md:p-10 flex flex-col justify-between snap-center">
               <span className="material-symbols-outlined text-secondary-fixed-dim text-4xl mb-6">format_quote</span>
               <p className="font-headline text-2xl text-primary italic mb-8 leading-snug">"{v.text}"</p>
               <div className="flex items-center gap-4 border-t border-white/5 pt-6">
@@ -144,13 +128,7 @@ const Home = () => {
       {/* Ciência do Goró */}
       <div id="ciencia-do-goro">
         <section className="px-16 mb-stack-lg text-center">
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={itemVariants}
-            className="max-w-4xl mx-auto"
-          >
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={itemVariants} className="max-w-4xl mx-auto">
             <span className="font-mono text-xs text-secondary-fixed-dim mb-4 block uppercase tracking-[0.3em]">Por que o Goró?</span>
             <h2 className="font-headline text-4xl md:text-6xl text-primary leading-tight uppercase">A Ciência do Shape Inexplicável</h2>
             <p className="font-body text-body-lg text-on-surface-variant mt-6 max-w-2xl mx-auto italic">
@@ -210,12 +188,8 @@ const Home = () => {
 
       <section className="py-section-gap px-margin text-center">
         <Link to="/catalog">
-          <motion.button 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="neon-border px-16 py-6 font-mono text-lg text-secondary-fixed-dim uppercase tracking-[0.4em] hover:bg-secondary-fixed-dim hover:text-background transition-all duration-500 neon-glow"
-          >
-            Acesse a Coleção
+          <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="neon-border px-16 py-6 font-mono text-lg text-secondary-fixed-dim uppercase tracking-[0.4em] hover:bg-secondary-fixed-dim hover:text-background transition-all duration-500 neon-glow">
+            {t('hero_cta')}
           </motion.button>
         </Link>
       </section>
