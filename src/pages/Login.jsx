@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 
 const Login = () => {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -35,6 +35,11 @@ const Login = () => {
     <main className="min-h-screen flex items-center justify-center px-margin bg-background relative overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(19,255,67,0.05)_0%,_transparent_70%)] pointer-events-none"></div>
       
+      <Link to="/" className="absolute top-10 left-10 flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors group">
+        <span className="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform">arrow_back</span>
+        {lang === 'pt' ? 'Início' : 'Home'}
+      </Link>
+
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

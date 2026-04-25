@@ -118,6 +118,7 @@ const translations = {
     success_desc: 'Sua jornada sensorial começou. Prepare-se para elevar sua experiência ao nível Mansão.',
     success_cta: 'Ver meus pedidos',
     back_to_catalog: 'Retornar ao Catálogo',
+    back_to_shop: 'Voltar às Compras',
     // Products
     p_neon_name: 'Neon Lime',
     p_neon_desc: 'O sabor da festa. Complexo vitamínico B, 0% Cafeína. A explosão cítrica que corta o escuro.',
@@ -249,6 +250,7 @@ const translations = {
     success_desc: 'Your sensory journey has begun. Prepare to elevate your experience to the Mansion level.',
     success_cta: 'View my orders',
     back_to_catalog: 'Back to Catalog',
+    back_to_shop: 'Back to Shop',
     // Products
     p_neon_name: 'Neon Lime',
     p_neon_desc: 'The flavor of the party. Vitamin B complex, 0% Caffeine. The citrus explosion that cuts through the dark.',

@@ -103,7 +103,12 @@ const Checkout = () => {
 
   return (
     <main className="min-h-screen flex flex-col md:flex-row bg-background">
-      <div className="w-full md:w-[450px] lg:w-[600px] p-8 md:p-24 pt-32 bg-white/[0.02] border-r border-white/5 flex flex-col">
+      <div className="w-full md:w-[450px] lg:w-[600px] p-8 md:p-24 pt-32 bg-white/[0.02] border-r border-white/5 flex flex-col relative">
+        <Link to="/catalog" className="absolute top-10 left-8 md:left-24 flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors group">
+          <span className="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform">arrow_back</span>
+          {t('back_to_shop')}
+        </Link>
+        
         <header className="mb-16">
           <h1 className="font-headline text-5xl mb-4 italic uppercase tracking-tighter">{t('checkout_title')}</h1>
           <div className="h-1 w-20 bg-primary"></div>
