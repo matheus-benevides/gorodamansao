@@ -129,6 +129,9 @@ const Navbar = () => {
           >
             <Link to="/catalog" onClick={() => setIsMenuOpen(false)}>{t('nav_collections')}</Link>
             <Link to="/" onClick={() => setIsMenuOpen(false)}>{t('nav_mansion')}</Link>
+            {user?.is_admin === 1 && (
+              <Link to="/admin" onClick={() => setIsMenuOpen(false)} className="text-primary">{t('admin_title')}</Link>
+            )}
             {user ? (
               <Link to="/profile" onClick={() => setIsMenuOpen(false)} className="text-emerald-400">{t('nav_profile')} ({user.name})</Link>
             ) : (

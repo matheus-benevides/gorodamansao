@@ -83,7 +83,7 @@ app.get('/api/products', async (req, res) => {
 
 app.get('/api/profile', authenticateToken, async (req, res) => {
     try {
-        const user = await db.get('SELECT id, name, email, avatar FROM users WHERE id = ?', [req.user.id]);
+        const user = await db.get('SELECT id, name, email, avatar, is_admin FROM users WHERE id = ?', [req.user.id]);
         const addresses = await db.all('SELECT * FROM addresses WHERE user_id = ?', [req.user.id]);
         const payments = await db.all('SELECT * FROM payment_methods WHERE user_id = ?', [req.user.id]);
         res.json({ ...user, addresses, payments });

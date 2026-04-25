@@ -27,6 +27,8 @@ const Profile = () => {
     .then(res => res.ok ? res.json() : Promise.reject())
     .then(data => {
       setProfile(data)
+      localStorage.setItem('user', JSON.stringify(data))
+      window.dispatchEvent(new Event('storage'))
       return fetch('http://localhost:3001/api/orders', {
         headers: { 'Authorization': `Bearer ${token}` }
       })
