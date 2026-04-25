@@ -1,135 +1,115 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Link, useNavigate } from 'react-router-dom'
-import { useCart } from '../context/CartContext'
+import { useNavigate, Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 
 const Checkout = () => {
-  const navigate = useNavigate()
   const { t } = useLanguage()
-  const { cart, subtotal, shipping, updateQuantity, removeFromCart, clearCart } = useCart()
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [isSuccess, setIsSuccess] = useState(false)
-  
+  const [cart, setCart] = useState([])
   const [addresses, setAddresses] = useState([])
   const [payments, setPayments] = useState([])
   const [selectedAddress, setSelectedAddress] = useState(null)
   const [selectedPayment, setSelectedPayment] = useState(null)
-  
-  // New Payment Form
+  const [isProcessing, setIsProcessing] = useState(false)
   const [showNewPaymentForm, setShowNewPaymentForm] = useState(false)
-  const [saveCard, setSaveCard] = useState(true)
-  const [newCard, setNewCard] = useState({ card_holder: '', card_number: '', expiry: '', type: 'Credit Card' })
+  const [newCard, setNewCard] = useState({ card_holder: '', card_number: '', expiry: '' })
+  const [saveCard, setSaveCard] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (!token) {
-      navigate('/login')
-      return
-    }
+    const savedCart = JSON.parse(localStorage.getItem('cart') || '[]')
+    setCart(savedCart)
 
-    fetch('http://localhost:3001/api/profile', {
-      headers: { 'Authorization': `Bearer ${token}` }
-    })
-    .then(res => res.json())
-    .then(data => {
-      setAddresses(data.addresses || [])
-      setPayments(data.payments || [])
-      if (data.addresses?.length > 0) setSelectedAddress(data.addresses[0].id)
-      if (data.payments?.length > 0) {
-        setSelectedPayment(data.payments[0].id)
-      } else {
-        setShowNewPaymentForm(true)
+    const token = localStorage.getItem('token')
+    if (token) {
+      fetch('http://localhost:3001/api/profile', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      .then(res => res.json())
+      .then(data => {
+        setAddresses(data.addresses || [])
+        setPayments(data.payments || [])
+        if (data.addresses?.length > 0) setSelectedAddress(data.addresses[0].id)
+        if (data.payments?.length > 0) setSelectedPayment(data.payments[0].id)
+      })
+    }
+  }, [])
+
+  const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0)
+  const shipping = subtotal > 100 ? 0 : 15
+  const total = subtotal + shipping
+
+  const removeFromCart = (id) => {
+    const newCart = cart.filter(item => item.id !== id)
+    setCart(newCart)
+    localStorage.setItem('cart', JSON.stringify(newCart))
+  }
+
+  const updateQuantity = (id, delta) => {
+    const newCart = cart.map(item => {
+      if (item.id === id) {
+        const q = Math.max(1, item.quantity + delta)
+        return { ...item, quantity: q }
       }
+      return item
     })
-    .catch(err => console.error(err))
-  }, [navigate])
+    setCart(newCart)
+    localStorage.setItem('cart', JSON.stringify(newCart))
+  }
 
   const handleConfirm = async (e) => {
     e.preventDefault()
-    if (cart.length === 0 || !selectedAddress) return
-    if (!selectedPayment && !showNewPaymentForm) return
-    
-    setIsProcessing(true)
     const token = localStorage.getItem('token')
-    
-    try {
-      let finalPaymentId = selectedPayment;
+    if (!token) return navigate('/login')
 
-      // If adding new card
-      if (showNewPaymentForm) {
-        if (saveCard) {
-          const saveRes = await fetch('http://localhost:3001/api/profile/payments', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-            body: JSON.stringify(newCard)
-          })
-          // We don't strictly need the ID here as the backend order can just use a dummy or we could fetch it.
-          // For simplicity in this demo, we'll proceed. In a real app, the API would return the ID.
-        }
+    setIsProcessing(true)
+
+    try {
+      let finalPaymentId = selectedPayment
+
+      // If new card and save is checked
+      if (showNewPaymentForm && saveCard) {
+        const cardRes = await fetch('http://localhost:3001/api/profile/payments', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify({ ...newCard, type: 'Credit Card' })
+        })
+        const cardData = await cardRes.json()
+        finalPaymentId = cardData.id
       }
 
       const res = await fetch('http://localhost:3001/api/orders', {
         method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({
+          items: cart,
           total: subtotal,
-          shipping: shipping,
+          shipping,
           address_id: selectedAddress,
-          payment_id: finalPaymentId || 999, // Temporary fallback
-          items: cart
+          payment_id: finalPaymentId
         })
       })
 
       if (res.ok) {
-        setTimeout(() => {
-          setIsProcessing(false)
-          setIsSuccess(true)
-          clearCart()
-        }, 1500)
-      } else {
-        setIsProcessing(false)
-        alert('Falha ao processar pedido')
+        localStorage.removeItem('cart')
+        navigate('/success')
       }
     } catch (err) {
-      setIsProcessing(false)
       console.error(err)
+    } finally {
+      setIsProcessing(false)
     }
   }
 
-  const total = subtotal + shipping
-
-  if (isSuccess) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-6 text-center">
-        <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="glass-card p-16 max-w-lg w-full border-primary/20">
-          <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-10">
-            <span className="material-symbols-outlined text-primary text-5xl">check_circle</span>
-          </div>
-          <h2 className="font-headline text-5xl mb-6 italic uppercase tracking-tighter">{t('success_title')}</h2>
-          <p className="font-mono text-xs text-on-surface-variant uppercase tracking-widest leading-loose mb-12">
-            {t('success_desc')}
-          </p>
-          <Link to="/profile" className="block w-full py-5 bg-primary text-background font-mono text-[10px] uppercase tracking-[0.3em] hover:bg-secondary-fixed-dim transition-all">{t('success_cta')}</Link>
-        </motion.div>
-      </div>
-    )
-  }
-
   return (
-    <main className="min-h-screen flex flex-col md:flex-row items-stretch">
-      <div className="w-full md:w-[45%] bg-surface-container-low p-8 md:p-20 flex flex-col pt-32">
-        <Link to="/catalog" className="flex items-center gap-4 text-on-surface-variant hover:text-primary transition-colors mb-12 group">
-          <span className="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform">arrow_back</span>
-          <span className="font-mono text-[10px] uppercase tracking-widest">{t('back_to_catalog')}</span>
-        </Link>
-        
-        <h1 className="font-headline text-4xl italic mb-10 uppercase tracking-tighter">{t('checkout_title')}</h1>
-        
-        <div className="space-y-6 flex-grow overflow-y-auto max-h-[50vh] pr-4 hide-scrollbar mb-10">
+    <main className="min-h-screen flex flex-col md:flex-row bg-background">
+      <div className="w-full md:w-[450px] lg:w-[600px] p-8 md:p-24 pt-32 bg-white/[0.02] border-r border-white/5 flex flex-col">
+        <header className="mb-16">
+          <h1 className="font-headline text-5xl mb-4 italic uppercase tracking-tighter">{t('checkout_title')}</h1>
+          <div className="h-1 w-20 bg-primary"></div>
+        </header>
+
+        <div className="flex-grow space-y-8 overflow-y-auto pr-4 hide-scrollbar">
           {cart.length === 0 ? (
             <div className="text-center py-20 opacity-30 font-mono text-xs uppercase tracking-widest">{t('checkout_empty')}</div>
           ) : (
@@ -177,7 +157,7 @@ const Checkout = () => {
             <div className="space-y-4">
               {addresses.length === 0 ? (
                 <Link to="/profile" className="block glass-card p-8 border-dashed text-center hover:border-primary transition-colors">
-                  <p className="font-mono text-[10px] uppercase text-on-surface-variant">Nenhum endereço salvo. Cadastre no perfil.</p>
+                  <p className="font-mono text-[10px] uppercase text-on-surface-variant">{t('order_empty')}</p>
                 </Link>
               ) : (
                 addresses.map(addr => (
@@ -212,11 +192,11 @@ const Checkout = () => {
                 <AnimatePresence>
                   {showNewPaymentForm && (
                     <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} className="mt-8 space-y-6 overflow-hidden">
-                      <input type="text" placeholder="Nome no Cartão" value={newCard.card_holder} onChange={e => setNewCard({...newCard, card_holder: e.target.value})} className="w-full bg-transparent border-b border-white/10 pb-2 font-mono text-xs focus:border-primary focus:outline-none" required={showNewPaymentForm} />
-                      <input type="text" placeholder="Número do Cartão" value={newCard.card_number} onChange={e => setNewCard({...newCard, card_number: e.target.value})} className="w-full bg-transparent border-b border-white/10 pb-2 font-mono text-xs focus:border-primary focus:outline-none" required={showNewPaymentForm} />
+                      <input type="text" placeholder={t('checkout_card_holder')} value={newCard.card_holder} onChange={e => setNewCard({...newCard, card_holder: e.target.value})} className="w-full bg-transparent border-b border-white/10 pb-2 font-mono text-xs focus:border-primary focus:outline-none" required={showNewPaymentForm} />
+                      <input type="text" placeholder={t('checkout_card_number')} value={newCard.card_number} onChange={e => setNewCard({...newCard, card_number: e.target.value})} className="w-full bg-transparent border-b border-white/10 pb-2 font-mono text-xs focus:border-primary focus:outline-none" required={showNewPaymentForm} />
                       <div className="flex gap-4">
-                        <input type="text" placeholder="MM/AA" value={newCard.expiry} onChange={e => setNewCard({...newCard, expiry: e.target.value})} className="flex-1 bg-transparent border-b border-white/10 pb-2 font-mono text-xs focus:border-primary focus:outline-none" required={showNewPaymentForm} />
-                        <input type="text" placeholder="CVV" className="w-20 bg-transparent border-b border-white/10 pb-2 font-mono text-xs focus:border-primary focus:outline-none" required={showNewPaymentForm} />
+                        <input type="text" placeholder={t('checkout_expiry')} value={newCard.expiry} onChange={e => setNewCard({...newCard, expiry: e.target.value})} className="flex-1 bg-transparent border-b border-white/10 pb-2 font-mono text-xs focus:border-primary focus:outline-none" required={showNewPaymentForm} />
+                        <input type="text" placeholder={t('checkout_cvv')} className="w-20 bg-transparent border-b border-white/10 pb-2 font-mono text-xs focus:border-primary focus:outline-none" required={showNewPaymentForm} />
                       </div>
                       <label className="flex items-center gap-3 cursor-pointer group">
                         <input type="checkbox" checked={saveCard} onChange={e => setSaveCard(e.target.checked)} className="hidden" />

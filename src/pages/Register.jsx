@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link, useNavigate } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 
 const Register = () => {
+  const { t } = useLanguage()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -17,14 +19,14 @@ const Register = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password })
       })
-      const data = await res.json()
       if (res.ok) {
         navigate('/login')
       } else {
-        setError(data.error || 'Erro ao criar conta')
+        const data = await res.json()
+        setError(data.error || t('auth_err_reg'))
       }
     } catch (err) {
-      setError('Erro de conexão')
+      setError(t('auth_err_conn'))
     }
   }
 
@@ -38,26 +40,26 @@ const Register = () => {
         className="glass-card p-12 w-full max-w-md relative z-10"
       >
         <header className="mb-12 text-center">
-          <h1 className="font-headline text-4xl italic mb-2 uppercase">Registrar</h1>
-          <p className="font-mono text-[10px] uppercase tracking-widest text-on-surface-variant">Solicite Acesso à Mansão</p>
+          <h1 className="font-headline text-4xl italic mb-2 uppercase">{t('reg_title')}</h1>
+          <p className="font-mono text-[10px] uppercase tracking-widest text-on-surface-variant">{t('reg_subtitle')}</p>
         </header>
 
         {error && <p className="text-error font-mono text-xs mb-6 text-center">{error}</p>}
 
         <form onSubmit={handleRegister} className="space-y-8">
           <div className="relative">
-            <label className="block font-mono text-[10px] text-on-surface-variant uppercase tracking-widest mb-2">Nome Completo</label>
+            <label className="block font-mono text-[10px] text-on-surface-variant uppercase tracking-widest mb-2">{t('reg_name')}</label>
             <input 
               type="text"
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full bg-transparent border-b border-white/10 pb-3 text-xl font-headline uppercase focus:border-secondary-container focus:outline-none transition-colors" 
-              placeholder="SEU NOME"
+              className="w-full bg-transparent border-b border-white/10 pb-3 text-xl font-headline focus:border-secondary-container focus:outline-none transition-colors" 
+              placeholder="Seu Nome"
             />
           </div>
           <div className="relative">
-            <label className="block font-mono text-[10px] text-on-surface-variant uppercase tracking-widest mb-2">E-mail</label>
+            <label className="block font-mono text-[10px] text-on-surface-variant uppercase tracking-widest mb-2">{t('reg_email')}</label>
             <input 
               type="email"
               required
@@ -68,7 +70,7 @@ const Register = () => {
             />
           </div>
           <div className="relative">
-            <label className="block font-mono text-[10px] text-on-surface-variant uppercase tracking-widest mb-2">Senha</label>
+            <label className="block font-mono text-[10px] text-on-surface-variant uppercase tracking-widest mb-2">{t('reg_pass')}</label>
             <input 
               type="password"
               required
@@ -84,12 +86,12 @@ const Register = () => {
             whileTap={{ scale: 0.98 }}
             className="w-full py-5 border border-secondary-container text-secondary-container font-mono text-xs uppercase tracking-[0.3em] hover:bg-secondary-container hover:text-background transition-all duration-500 neon-glow"
           >
-            Criar Conta
+            {t('reg_btn')}
           </motion.button>
         </form>
 
         <p className="mt-12 text-center font-mono text-[10px] text-on-surface-variant uppercase tracking-widest">
-          Já é um membro? <Link to="/login" className="text-primary hover:text-secondary-fixed-dim border-b border-white/10">Fazer Login</Link>
+          {t('reg_has_acc')} <Link to="/login" className="text-primary hover:text-secondary-fixed-dim border-b border-white/10">{t('reg_login_link')}</Link>
         </p>
       </motion.div>
     </main>

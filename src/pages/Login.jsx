@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link, useNavigate } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 
 const Login = () => {
+  const { t } = useLanguage()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -22,10 +24,10 @@ const Login = () => {
         localStorage.setItem('user', JSON.stringify(data.user))
         navigate('/')
       } else {
-        setError(data.error || 'Credenciais inválidas')
+        setError(data.error || t('auth_err_creds'))
       }
     } catch (err) {
-      setError('Erro de conexão')
+      setError(t('auth_err_conn'))
     }
   }
 
@@ -39,15 +41,15 @@ const Login = () => {
         className="glass-card p-12 w-full max-w-md relative z-10"
       >
         <header className="mb-12 text-center">
-          <h1 className="font-headline text-4xl italic mb-2 uppercase">Entrar</h1>
-          <p className="font-mono text-[10px] uppercase tracking-widest text-on-surface-variant">Acesse a Mansão</p>
+          <h1 className="font-headline text-4xl italic mb-2 uppercase">{t('login_title')}</h1>
+          <p className="font-mono text-[10px] uppercase tracking-widest text-on-surface-variant">{t('login_subtitle')}</p>
         </header>
 
         {error && <p className="text-error font-mono text-xs mb-6 text-center">{error}</p>}
 
         <form onSubmit={handleLogin} className="space-y-8">
           <div className="relative">
-            <label className="block font-mono text-[10px] text-on-surface-variant uppercase tracking-widest mb-2">E-mail</label>
+            <label className="block font-mono text-[10px] text-on-surface-variant uppercase tracking-widest mb-2">{t('login_email')}</label>
             <input 
               type="email"
               required
@@ -58,7 +60,7 @@ const Login = () => {
             />
           </div>
           <div className="relative">
-            <label className="block font-mono text-[10px] text-on-surface-variant uppercase tracking-widest mb-2">Senha</label>
+            <label className="block font-mono text-[10px] text-on-surface-variant uppercase tracking-widest mb-2">{t('login_pass')}</label>
             <input 
               type="password"
               required
@@ -74,12 +76,12 @@ const Login = () => {
             whileTap={{ scale: 0.98 }}
             className="w-full py-5 border border-secondary-container text-secondary-container font-mono text-xs uppercase tracking-[0.3em] hover:bg-secondary-container hover:text-background transition-all duration-500 neon-glow"
           >
-            Entrar no Vazio
+            {t('login_btn')}
           </motion.button>
         </form>
 
         <p className="mt-12 text-center font-mono text-[10px] text-on-surface-variant uppercase tracking-widest">
-          Ainda não tem convite? <Link to="/register" className="text-primary hover:text-secondary-fixed-dim border-b border-white/10">Solicitar Acesso</Link>
+          {t('login_no_acc')} <Link to="/register" className="text-primary hover:text-secondary-fixed-dim border-b border-white/10">{t('login_register_link')}</Link>
         </p>
       </motion.div>
     </main>

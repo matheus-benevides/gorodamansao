@@ -5,6 +5,7 @@ import Checkout from './pages/Checkout'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Profile from './pages/Profile'
+import Success from './pages/Success'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 
@@ -19,6 +20,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/success" element={<Success />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Footer />

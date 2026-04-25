@@ -54,7 +54,7 @@ const Profile = () => {
     if (res.ok) {
       localStorage.setItem('user', JSON.stringify({ ...profile }))
       window.dispatchEvent(new Event('storage'))
-      setMessage(t('profile_save_success') || 'OK')
+      setMessage(t('profile_save_success'))
       setTimeout(() => setMessage(''), 3000)
     }
   }
@@ -126,11 +126,11 @@ const Profile = () => {
             <form onSubmit={handleUpdateProfile} className="space-y-10">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                 <div className="space-y-4">
-                  <label className="font-mono text-[10px] text-on-surface-variant uppercase tracking-widest">Full Name</label>
+                  <label className="font-mono text-[10px] text-on-surface-variant uppercase tracking-widest">{t('profile_name_label')}</label>
                   <input type="text" value={profile.name} onChange={e => setProfile({...profile, name: e.target.value})} className="w-full bg-transparent border-b border-white/10 pb-3 text-xl font-headline focus:border-primary focus:outline-none" />
                 </div>
                 <div className="space-y-4">
-                  <label className="font-mono text-[10px] text-on-surface-variant uppercase tracking-widest">Email Address</label>
+                  <label className="font-mono text-[10px] text-on-surface-variant uppercase tracking-widest">{t('profile_email_label')}</label>
                   <input type="email" value={profile.email} onChange={e => setProfile({...profile, email: e.target.value})} className="w-full bg-transparent border-b border-white/10 pb-3 text-xl font-headline focus:border-primary focus:outline-none" />
                 </div>
               </div>
@@ -190,20 +190,20 @@ const Profile = () => {
             <div className="flex justify-between items-center mb-8">
               <h2 className="font-headline text-3xl italic uppercase">{t('addr_saved')}</h2>
               <button onClick={() => setShowAddressForm(!showAddressForm)} className="font-mono text-[10px] text-primary border-b border-primary/30 uppercase tracking-widest hover:border-primary">
-                {showAddressForm ? 'Cancel' : t('addr_new')}
+                {showAddressForm ? t('addr_cancel') : t('addr_new')}
               </button>
             </div>
 
             {showAddressForm && (
               <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} className="glass-card p-10 mb-12 overflow-hidden">
                 <form onSubmit={handleAddAddress} className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <input type="text" placeholder="Street" value={newAddress.street} onChange={e => setNewAddress({...newAddress, street: e.target.value})} className="col-span-full bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
-                  <input type="text" placeholder="City" value={newAddress.city} onChange={e => setNewAddress({...newAddress, city: e.target.value})} className="bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
+                  <input type="text" placeholder={t('addr_street')} value={newAddress.street} onChange={e => setNewAddress({...newAddress, street: e.target.value})} className="col-span-full bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
+                  <input type="text" placeholder={t('addr_city')} value={newAddress.city} onChange={e => setNewAddress({...newAddress, city: e.target.value})} className="bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
                   <div className="grid grid-cols-2 gap-4">
-                    <input type="text" placeholder="State" value={newAddress.state} onChange={e => setNewAddress({...newAddress, state: e.target.value})} className="bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
-                    <input type="text" placeholder="ZIP" value={newAddress.zip} onChange={e => setNewAddress({...newAddress, zip: e.target.value})} className="bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
+                    <input type="text" placeholder={t('addr_state')} value={newAddress.state} onChange={e => setNewAddress({...newAddress, state: e.target.value})} className="bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
+                    <input type="text" placeholder={t('addr_zip')} value={newAddress.zip} onChange={e => setNewAddress({...newAddress, zip: e.target.value})} className="bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
                   </div>
-                  <button className="col-span-full neon-border py-4 font-mono text-[10px] uppercase tracking-widest hover:bg-primary hover:text-background transition-all">Save Address</button>
+                  <button className="col-span-full neon-border py-4 font-mono text-[10px] uppercase tracking-widest hover:bg-primary hover:text-background transition-all">{t('addr_save')}</button>
                 </form>
               </motion.div>
             )}
@@ -224,17 +224,17 @@ const Profile = () => {
             <div className="flex justify-between items-center mb-8">
               <h2 className="font-headline text-3xl italic uppercase">{t('pay_methods')}</h2>
               <button onClick={() => setShowPaymentForm(!showPaymentForm)} className="font-mono text-[10px] text-primary border-b border-primary/30 uppercase tracking-widest hover:border-primary">
-                {showPaymentForm ? 'Cancel' : t('pay_new')}
+                {showPaymentForm ? t('addr_cancel') : t('pay_new')}
               </button>
             </div>
 
             {showPaymentForm && (
               <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} className="glass-card p-10 mb-12 overflow-hidden">
                 <form onSubmit={handleAddPayment} className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <input type="text" placeholder="Card Holder Name" value={newPayment.card_holder} onChange={e => setNewPayment({...newPayment, card_holder: e.target.value})} className="col-span-full bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
-                  <input type="text" placeholder="Card Number" value={newPayment.card_number} onChange={e => setNewPayment({...newPayment, card_number: e.target.value})} className="bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
-                  <input type="text" placeholder="MM/YY" value={newPayment.expiry} onChange={e => setNewPayment({...newPayment, expiry: e.target.value})} className="bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
-                  <button className="col-span-full neon-border py-4 font-mono text-[10px] uppercase tracking-widest hover:bg-primary hover:text-background transition-all">Save Card</button>
+                  <input type="text" placeholder={t('pay_holder')} value={newPayment.card_holder} onChange={e => setNewPayment({...newPayment, card_holder: e.target.value})} className="col-span-full bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
+                  <input type="text" placeholder={t('pay_number')} value={newPayment.card_number} onChange={e => setNewPayment({...newPayment, card_number: e.target.value})} className="bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
+                  <input type="text" placeholder={t('pay_expiry')} value={newPayment.expiry} onChange={e => setNewPayment({...newPayment, expiry: e.target.value})} className="bg-transparent border-b border-white/10 pb-3 font-mono text-sm focus:border-primary focus:outline-none" required />
+                  <button className="col-span-full neon-border py-4 font-mono text-[10px] uppercase tracking-widest hover:bg-primary hover:text-background transition-all">{t('pay_save')}</button>
                 </form>
               </motion.div>
             )}

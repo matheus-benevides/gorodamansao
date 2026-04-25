@@ -101,14 +101,14 @@ const Home = () => {
       {/* Vozes da Mansão */}
       <section className="py-section-gap">
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={itemVariants} className="px-margin mb-stack-md">
-          <h2 className="font-headline text-3xl md:text-4xl text-primary italic border-l-2 border-secondary-fixed-dim pl-6 uppercase">Vozes da Mansão</h2>
+          <h2 className="font-headline text-3xl md:text-4xl text-primary italic border-l-2 border-secondary-fixed-dim pl-6 uppercase">{t('home_voices_title')}</h2>
         </motion.div>
         
         <div className="flex overflow-x-auto hide-scrollbar gap-gutter px-margin pb-12 snap-x">
           {[
-            { name: "Lucca M.", role: "Techno Artist", text: "O único drink que me permite performar no palco e na academia sem o crash do café.", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuD1HvSc5RcNe9lGfg-Cc72VTGSDEgfRnzy8uIkoZ56Frd4nXagvo5NewN2B2Nhapr-uDpslipuvX49inl2zmbbxegJNFQ37b4olDB3qfcgQ8tIZL2N2qwvwkyON9Jk9E3nN8PHq1ziYCgKWayU0aAD83oM2_RIoczTdZR71NtiCZOh4lGwz9-BxRdgVOJC0s78HEu9aat4Vnhfqfi5XyFKhL0wbvSQN-JlmHPdVmcHOHfnW_qmp4qXvFwLSvNCzG4BfBoHovwfzcd4" },
-            { name: "Felipe R.", role: "Fitness Curator", text: "Redução de danos nunca foi tão sexy. O shape agradece e a mente flutua.", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDnrjtzDrjVYgQPK_L_C-nd6G_A1tg3S3lgP27cTBMRpsmLyNhJslUrnuN4xWP6_2sy6BlcgOdywekL0zzxglJLrJQNvcEgweS07RKtzG7DQjFaYl4esJtxfZhF0sTBXl-MrIj8OQ5yV4CF4qLgfoLY-Du6NwNnwD2UNdtcPUuDJXs8AJA2txpV8z0SRECgkGqKLy59nx_RFv-f3KTMjue5bt8buTXUSGryhQD-re4Qg4QoqaGr03_wA27Tpl0yxL9u5ZJleO11jlg" },
-            { name: "Bia S.", role: "Visual Designer", text: "Substituí o álcool por Goró e minha criatividade triplicou. Mansão lifestyle.", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBI94CEBTUVfws5YrTeTFYnu0EIQCbLrHQg4LLKIootlvqlxQLzKgXdjr2sfI-TlYkoXfXAzfeC0UAOqkdCZ9Z5Ep5F_nNuESCOirZraN9gT_hd-uPgG5OMfJIkuM2k30pLm7afhzZb1XlOTX9aw6AwuWX_7WYmIObiUX0WgxmLuNMYfcU4If38vLDrHr3qMhc35xJANMjzD7kgFbTkuHH15ZewN8dYHigECbs80hK8m0LYtnJudD9ZwAHOQnxYv4RKaqFJreDwvdg" }
+            { name: "Lucca M.", role: "Techno Artist", text: t('home_voice1_text'), img: "https://lh3.googleusercontent.com/aida-public/AB6AXuD1HvSc5RcNe9lGfg-Cc72VTGSDEgfRnzy8uIkoZ56Frd4nXagvo5NewN2B2Nhapr-uDpslipuvX49inl2zmbbxegJNFQ37b4olDB3qfcgQ8tIZL2N2qwvwkyON9Jk9E3nN8PHq1ziYCgKWayU0aAD83oM2_RIoczTdZR71NtiCZOh4lGwz9-BxRdgVOJC0s78HEu9aat4Vnhfqfi5XyFKhL0wbvSQN-JlmHPdVmcHOHfnW_qmp4qXvFwLSvNCzG4BfBoHovwfzcd4" },
+            { name: "Felipe R.", role: "Fitness Curator", text: t('home_voice2_text'), img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDnrjtzDrjVYgQPK_L_C-nd6G_A1tg3S3lgP27cTBMRpsmLyNhJslUrnuN4xWP6_2sy6BlcgOdywekL0zzxglJLrJQNvcEgweS07RKtzG7DQjFaYl4esJtxfZhF0sTBXl-MrIj8OQ5yV4CF4qLgfoLY-Du6NwNnwD2UNdtcPUuDJXs8AJA2txpV8z0SRECgkGqKLy59nx_RFv-f3KTMjue5bt8buTXUSGryhQD-re4Qg4QoqaGr03_wA27Tpl0yxL9u5ZJleO11jlg" },
+            { name: "Bia S.", role: "Visual Designer", text: t('home_voice3_text'), img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBI94CEBTUVfws5YrTeTFYnu0EIQCbLrHQg4LLKIootlvqlxQLzKgXdjr2sfI-TlYkoXfXAzfeC0UAOqkdCZ9Z5Ep5F_nNuESCOirZraN9gT_hd-uPgG5OMfJIkuM2k30pLm7afhzZb1XlOTX9aw6AwuWX_7WYmIObiUX0WgxmLuNMYfcU4If38vLDrHr3qMhc35xJANMjzD7kgFbTkuHH15ZewN8dYHigECbs80hK8m0LYtnJudD9ZwAHOQnxYv4RKaqFJreDwvdg" }
           ].map((v, i) => (
             <motion.div key={i} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.2 }} className="glass-card min-w-[300px] md:min-w-[400px] p-6 md:p-10 flex flex-col justify-between snap-center">
               <span className="material-symbols-outlined text-secondary-fixed-dim text-4xl mb-6">format_quote</span>
@@ -129,10 +129,10 @@ const Home = () => {
       <div id="ciencia-do-goro">
         <section className="px-16 mb-stack-lg text-center">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={itemVariants} className="max-w-4xl mx-auto">
-            <span className="font-mono text-xs text-secondary-fixed-dim mb-4 block uppercase tracking-[0.3em]">Por que o Goró?</span>
-            <h2 className="font-headline text-4xl md:text-6xl text-primary leading-tight uppercase">A Ciência do Shape Inexplicável</h2>
+            <span className="font-mono text-xs text-secondary-fixed-dim mb-4 block uppercase tracking-[0.3em]">{t('home_science_badge')}</span>
+            <h2 className="font-headline text-4xl md:text-6xl text-primary leading-tight uppercase">{t('home_science_title')}</h2>
             <p className="font-body text-body-lg text-on-surface-variant mt-6 max-w-2xl mx-auto italic">
-              Esqueça o colapso. Desenvolvemos a alquimia perfeita para quem vive no limite entre a performance do dia e o caos da noite.
+              {t('home_science_desc')}
             </p>
           </motion.div>
         </section>
@@ -141,13 +141,13 @@ const Home = () => {
           <div className="relative bg-neutral-900/30 p-16 flex flex-col justify-center border-r border-white/5 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-error-container/10 to-transparent pointer-events-none"></div>
             <div className="relative z-10 space-y-12">
-              <div className="inline-block px-4 py-1 border border-error text-error font-mono text-xs uppercase tracking-widest">O Perigo</div>
-              <h2 className="font-headline text-4xl text-error uppercase">Energético Comum + Álcool = Caos Cardíaco</h2>
+              <div className="inline-block px-4 py-1 border border-error text-error font-mono text-xs uppercase tracking-widest">{t('home_danger_badge')}</div>
+              <h2 className="font-headline text-4xl text-error uppercase">{t('home_danger_title')}</h2>
               <div className="grid gap-8">
                 {[
-                  { icon: "heart_broken", title: "Taquicardia Descontrolada", text: "O excesso de cafeína sintética mascara a embriaguez e sobrecarrega o miocárdio em tempo recorde." },
-                  { icon: "psychology_alt", title: "Ansiedade & Queda", text: "O pico de açúcar seguido pela queda brusca gera irritabilidade e uma 'bad trip' garantida no dia seguinte." },
-                  { icon: "bolt", title: "Burnout Celular", text: "Estresse oxidativo agressivo que drena sua energia vital e destrói sua recuperação muscular." }
+                  { icon: "heart_broken", title: t('home_danger_h1'), text: t('home_danger_p1') },
+                  { icon: "psychology_alt", title: t('home_danger_h2'), text: t('home_danger_p2') },
+                  { icon: "bolt", title: t('home_danger_h3'), text: t('home_danger_p3') }
                 ].map((item, i) => (
                   <div key={i} className="glass-card p-8 flex items-start gap-6 border-error/20">
                     <span className="material-symbols-outlined text-error text-4xl">{item.icon}</span>
@@ -164,13 +164,13 @@ const Home = () => {
           <div className="relative bg-background p-16 flex flex-col justify-center overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-secondary-container/10 to-transparent pointer-events-none"></div>
             <div className="relative z-10 space-y-12">
-              <div className="inline-block px-4 py-1 border border-secondary-container text-secondary-container font-mono text-xs uppercase tracking-widest">A Revolução</div>
-              <h2 className="font-headline text-4xl text-secondary-fixed-dim uppercase">Goró da Mansão = Vibe Pura & Redução de Danos</h2>
+              <div className="inline-block px-4 py-1 border border-secondary-container text-secondary-container font-mono text-xs uppercase tracking-widest">{t('home_rev_badge')}</div>
+              <h2 className="font-headline text-4xl text-secondary-fixed-dim uppercase">{t('home_rev_title')}</h2>
               <div className="grid gap-8">
                 {[
-                  { icon: "water_drop", title: "Hidratação Inteligente", text: "Eletrólitos biodisponíveis que mantêm o equilíbrio osmótico mesmo sob o efeito do álcool." },
-                  { icon: "verified", title: "Foco & Vitaminas", text: "Complexo B e Nootrópicos naturais que protegem o fígado e mantêm a mente afiada na pista." },
-                  { icon: "energy_savings_leaf", title: "Sem Ressaca Atômica", text: "Curadoria de ervas adaptógenas que suavizam a descida, garantindo um despertar sem arrependimentos." }
+                  { icon: "water_drop", title: t('home_rev_h1'), text: t('home_rev_p1') },
+                  { icon: "verified", title: t('home_rev_h2'), text: t('home_rev_p2') },
+                  { icon: "energy_savings_leaf", title: t('home_rev_h3'), text: t('home_rev_p3') }
                 ].map((item, i) => (
                   <div key={i} className="glass-card p-8 flex items-start gap-6 border-secondary-container/20">
                     <span className="material-symbols-outlined text-secondary-container text-4xl">{item.icon}</span>

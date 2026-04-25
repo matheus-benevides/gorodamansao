@@ -1,31 +1,46 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 
 const Footer = () => {
-  const location = useLocation()
-  if (location.pathname === '/checkout') return null
-
+  const { t } = useLanguage()
   return (
-    <footer className="bg-black w-full py-40 border-t border-white/5 flex flex-col items-center gap-12 px-16 text-center">
-      <Link to="/" className="text-xl font-serif text-neutral-50 italic uppercase tracking-tighter">
-        GORÓ DA MANSÃO
-      </Link>
-      
-      <div className="flex flex-wrap justify-center gap-12 mb-12">
-        <Link to="#" className="font-sans text-[10px] tracking-[0.3em] uppercase text-neutral-600 hover:text-neutral-50 transition-colors duration-300">Contato</Link>
-        <Link to="#" className="font-sans text-[10px] tracking-[0.3em] uppercase text-neutral-600 hover:text-neutral-50 transition-colors duration-300">Envio</Link>
-        <Link to="#" className="font-sans text-[10px] tracking-[0.3em] uppercase text-neutral-600 hover:text-neutral-50 transition-colors duration-300">Privacidade</Link>
-        <Link to="#" className="font-sans text-[10px] tracking-[0.3em] uppercase text-neutral-600 hover:text-neutral-50 transition-colors duration-300">Sustentabilidade</Link>
+    <footer className="bg-background border-t border-white/5 pt-20 pb-10 px-margin">
+      <div className="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
+        <div className="col-span-1 md:col-span-2">
+          <Link to="/" className="text-3xl font-serif text-neutral-50 tracking-tighter italic mb-6 block">
+            GORÓ DA MANSÃO
+          </Link>
+          <p className="font-body text-on-surface-variant max-w-sm opacity-60 italic">
+            {t('footer_desc')}
+          </p>
+        </div>
+        
+        <div>
+          <h4 className="font-mono text-[10px] uppercase tracking-widest text-primary mb-6">{t('footer_shop')}</h4>
+          <ul className="space-y-4 font-mono text-[10px] uppercase tracking-widest text-on-surface-variant">
+            <li><Link to="/catalog" className="hover:text-white transition-colors">{t('nav_collections')}</Link></li>
+            <li><Link to="/" className="hover:text-white transition-colors">{t('nav_mansion')}</Link></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 className="font-mono text-[10px] uppercase tracking-widest text-primary mb-6">{t('footer_support')}</h4>
+          <ul className="space-y-4 font-mono text-[10px] uppercase tracking-widest text-on-surface-variant">
+            <li><a href="#" className="hover:text-white transition-colors">{t('footer_terms')}</a></li>
+            <li><a href="#" className="hover:text-white transition-colors">{t('footer_privacy')}</a></li>
+          </ul>
+        </div>
       </div>
       
-      <div className="flex gap-8 mb-12">
-        <span className="material-symbols-outlined text-neutral-500 hover:text-secondary-fixed-dim cursor-pointer transition-colors">public</span>
-        <span className="material-symbols-outlined text-neutral-500 hover:text-secondary-fixed-dim cursor-pointer transition-colors">share</span>
-        <span className="material-symbols-outlined text-neutral-500 hover:text-secondary-fixed-dim cursor-pointer transition-colors">alternate_email</span>
+      <div className="max-w-container-max mx-auto pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+        <p className="font-mono text-[8px] uppercase tracking-widest text-on-surface-variant opacity-40">
+          © 2025 GORÓ DA MANSÃO. {t('footer_rights')}
+        </p>
+        <div className="flex gap-8">
+          <a href="#" className="text-on-surface-variant hover:text-white transition-colors"><span className="material-symbols-outlined text-lg">brand_awareness</span></a>
+          <a href="#" className="text-on-surface-variant hover:text-white transition-colors"><span className="material-symbols-outlined text-lg">public</span></a>
+        </div>
       </div>
-      
-      <p className="font-sans text-[10px] tracking-[0.3em] uppercase text-neutral-500 opacity-80 hover:opacity-100 transition-opacity">
-        © 2025 GORÓ DA MANSÃO. NASCIDO NO VAZIO.
-      </p>
     </footer>
   )
 }
