@@ -119,7 +119,7 @@ const Checkout = () => {
             <div className="text-center py-20 opacity-30 font-mono text-xs uppercase tracking-widest">{t('checkout_empty')}</div>
           ) : (
             cart.map(item => {
-              const nameKey = `p_${item.name.toLowerCase().replace(' ', '_')}_name`;
+              const nameKey = `p_${item.name.toLowerCase().replace(/\s+/g, '_')}_name`;
               return (
                 <div key={item.id} className="glass-card p-6 flex gap-6 items-center">
                   <img src={item.image} className="w-20 h-20 object-contain" />
